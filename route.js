@@ -2,9 +2,9 @@ exports.route = function(paths) {
     var n = paths.length, lookup = {};
     for(var i=0; i<n; i++) {
         var p = paths[i],
-            url = p.url;
-        p.url = new RegExp(url.replace(/{}/g, '([a-zA-Z0-9._]*)'));
-        p.generate = url.replace(/^\^/, '').replace(/\$$/, '');
+            url = p.url.replace(/^\^/, '').replace(/\$$/, '');
+        p.generate = url;
+        p.url = new RegExp('^' + url.replace(/{}/g, '([a-zA-Z0-9._]*)') + '$');
         lookup[p.name] = i;
     }
     
@@ -22,9 +22,9 @@ exports.route = function(paths) {
                 f = p.all || p[request.method.toLowerCase()];
             if(match && f) {
                 if(request.method === 'POST' || request.method === 'PUT') 
-                    getpost(request, response, reroute, f, match);
+                    getpost(request, response, match, f, reroute);
                 else 
-                    f(request, response, reroute, match, '');
+                    f(request, response, match, '', reroute);
                 return 200;
             }
         }
@@ -32,10 +32,10 @@ exports.route = function(paths) {
     }
 }
 
-function getpost(request, response, reroute, f, match) {
+function getpost(request, response, match, f, reroute) {
     var text = '';
     request.addListener('data', function(chunk) { text += chunk; });
     request.addListener('end', function() {
-        f(request, response, reroute, match, text);
+        f(request, response, match, text, reroute);
     });
 }

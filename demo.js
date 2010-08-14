@@ -1,12 +1,12 @@
 var http = require('http'),
     route = require('./route').route;
 
-var x = function(request, response, reroute, match, text) {
+var x = function(request, response, match, text, reroute) {
     response.writeHead(200, {'Content-Type': 'text/html'});
     response.end(JSON.stringify(match));
 }
 
-var y = function(request, response, reroute, match, text) {
+var y = function(request, response, match, text, reroute) {
     response.writeHead(200, {'Content-Type': 'text/html'});
     response.end('404 ' + request.url + ' ' + reroute('complex', 4, 'nime') );
 }
