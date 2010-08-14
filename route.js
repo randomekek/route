@@ -30,6 +30,7 @@ exports.route = function(paths) {
                     f(request, response, reroute, '', match);
             }
         }
+        return 404;
     }
 }
 
