@@ -28,6 +28,7 @@ exports.route = function(paths) {
                     getpost(request, response, reroute, f, match);
                 else 
                     f(request, response, reroute, '', match);
+                return 200;
             }
         }
         return 404;
